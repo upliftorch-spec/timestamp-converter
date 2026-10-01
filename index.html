@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://upliftorch.com/tools/timestamp-converter/">
+  <link rel="alternate" hreflang="zh-TW" href="https://upliftorch.com/tools/timestamp-converter/">
+  <link rel="alternate" hreflang="en" href="https://upliftorch.com/tools/timestamp-converter/en/">
+  <link rel="alternate" hreflang="x-default" href="https://upliftorch.com/tools/timestamp-converter/en/">
+  <title>Unix Timestamp 轉換器｜Log 時間批次轉換、ISO 8601 與時區換算</title>
+  <meta name="description" content="免費 Unix Timestamp 與 Log 時間轉換器，支援秒、毫秒、微秒、奈秒、ISO 8601、Apache Log，整段批次轉成指定時區。資料只在瀏覽器處理。">
+  <meta name="keywords" content="Unix Timestamp 轉換器,時間戳轉換,Epoch Converter,Log 時間轉換,ISO 8601,時區轉換">
+  <meta property="og:title" content="Unix Timestamp／Log 時間轉換器">
+  <meta property="og:description" content="單筆或整段 Log 批次辨識，快速轉成 UTC、本地與指定時區。">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Unix Timestamp／Log 時間轉換器","url":"https://upliftorch.com/tools/timestamp-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"All","description":"支援 Unix Timestamp、ISO 8601 與 Log 時間批次轉換的免費瀏覽器工具","offers":{"@type":"Offer","price":"0","priceCurrency":"TWD"}}</script>
+</head>
+<body>
+  <header><div class="header-inner"><a class="brand" href="https://upliftorch.com/tools/timestamp-converter/"><span class="icon icon-clock" aria-hidden="true"></span><span>Timestamp Converter</span></a><div class="header-actions"><a href="https://upliftorch.com/tools/timestamp-converter/en/">EN</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="切換深色模式"><span class="icon icon-moon" id="themeIcon" aria-hidden="true"></span></button></div></div></header>
+  <main class="container">
+    <nav class="breadcrumb" aria-label="麵包屑"><a href="https://upliftorch.com/">首頁</a><span>›</span><a href="https://upliftorch.com/tools">免費線上工具</a><span>›</span><span aria-current="page">Timestamp 轉換器</span></nav>
+    <section class="hero"><div class="eyebrow">Developer Utility</div><h1>Unix Timestamp／Log 時間轉換器</h1><p>辨識 Unix 秒、毫秒、微秒、奈秒、ISO 8601 與 Apache Log，轉成 UTC、本地或指定 IANA 時區。</p><div class="privacy-note"><span class="icon icon-lock" aria-hidden="true"></span><span>所有內容只在你的瀏覽器內處理</span></div></section>
+
+    <section class="tool-grid" aria-label="時間轉換工具">
+      <div class="card">
+        <h2>單筆時間轉換</h2><p class="card-intro">貼上時間戳或日期時間，Enter 即可轉換。</p>
+        <div class="field"><label for="timestampInput">時間值</label><input class="input" id="timestampInput" autocomplete="off" spellcheck="false" placeholder="例如 1767225600 或 2026-01-01T00:00:00Z"></div>
+        <div class="button-row"><button class="btn btn-primary" id="convertBtn" type="button">轉換時間</button><button class="btn btn-secondary" id="nowBtn" type="button">使用現在時間</button></div>
+        <div class="examples"><span>範例：</span><button class="chip" type="button" data-example="1767225600">Unix 秒</button><button class="chip" type="button" data-example="1767225600000">Unix 毫秒</button><button class="chip" type="button" data-example="2026-01-01T00:00:00Z">ISO 8601</button></div>
+        <div class="status" id="inputStatus" aria-live="polite"></div><div class="result-panel" id="resultPanel" hidden></div>
+      </div>
+      <div class="card">
+        <h2>轉換設定</h2><p class="card-intro">明確指定無時區輸入的解讀方式與輸出時區。</p>
+        <div class="field"><label for="naiveMode">沒有標示時區時</label><select class="select" id="naiveMode"><option value="utc">視為 UTC</option><option value="local">視為瀏覽器本地時間</option><option value="zone">使用指定來源時區</option></select></div>
+        <div class="field" id="sourceZoneField" hidden><label for="sourceZone">來源 IANA 時區</label><input class="input" id="sourceZone" list="timezoneList" placeholder="Asia/Tokyo" autocomplete="off"></div>
+        <div class="field"><label for="outputZone">輸出 IANA 時區</label><input class="input" id="outputZone" list="timezoneList" placeholder="Asia/Taipei" autocomplete="off"><datalist id="timezoneList"></datalist></div>
+        <div class="field"><label for="syslogYear">無年份 syslog 的年份（選填）</label><input class="input" id="syslogYear" type="number" min="1970" max="9999" placeholder="例如 2026"></div>
+        <div class="field"><label for="numericMode">Log 內純數字辨識</label><select class="select" id="numericMode"><option value="contextual">只辨識 timestamp／time／ts／iat／exp 等欄位</option><option value="all">辨識全部 10／13／16／19 位數字</option></select></div>
+        <div class="supported"><strong>支援格式</strong><br>10／13／16／19 位 Unix Timestamp、ISO 8601、Java、RFC 2822、Apache／Nginx、syslog，以及 YYYY-MM-DD HH:mm:ss。</div>
+      </div>
+      <div class="card full">
+        <h2>整段 Log 批次轉換</h2><p class="card-intro">保留原文並在每個辨識到的時間後附上轉換結果，方便除錯與跨時區查 Log。</p>
+        <div class="log-grid"><div><label for="logInput">原始 Log</label><textarea class="textarea" id="logInput" spellcheck="false" placeholder="2026-01-01T00:00:00Z INFO server started&#10;127.0.0.1 - - [01/Jan/2026:08:00:00 +0800] GET /health 200"></textarea></div><div><label for="logOutput">轉換結果</label><textarea class="textarea output" id="logOutput" readonly placeholder="轉換結果會顯示在這裡"></textarea></div></div>
+        <div class="button-row"><button class="btn btn-primary" id="logConvertBtn" type="button">批次轉換</button><button class="btn btn-secondary" id="copyLogBtn" type="button">複製結果</button><button class="btn btn-secondary" id="logClearBtn" type="button">清除</button></div><div class="status" id="logStatus" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="content"><h2>三步完成時間轉換</h2><div class="steps"><div class="step"><strong>1. 貼上時間</strong><span>輸入單筆 Timestamp，或直接貼入整段系統 Log。</span></div><div class="step"><strong>2. 選擇時區</strong><span>設定沒有 offset 的時間如何解讀，再指定輸出時區。</span></div><div class="step"><strong>3. 複製結果</strong><span>取得 Unix、ISO、UTC、本地時間或保留原文的批次 Log。</span></div></div></section>
+    <section class="content"><h2>適合哪些情境？</h2><div class="feature-grid"><div class="feature"><strong>後端與 API 除錯</strong><p>快速理解資料庫、JWT 或 API 回傳的 Epoch 時間。</p></div><div class="feature"><strong>跨區 Log 分析</strong><p>把 UTC、Apache Log 一次轉成團隊所在時區。</p></div><div class="feature"><strong>格式核對</strong><p>同時取得秒、毫秒與 ISO 8601，避免單位判斷錯誤。</p></div></div></section>
+    <section class="content faq"><h2>常見問題</h2>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Unix Timestamp 是秒還是毫秒？</button><div class="faq-answer" hidden>常見 Unix Timestamp 是從 1970-01-01 UTC 起算的秒數；JavaScript 等環境也常使用毫秒。本工具依位數辨識 10、13、16、19 位數值。</div></div>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">沒有標示時區的日期怎麼處理？</button><div class="faq-answer" hidden>預設視為 UTC，避免因電腦所在位置不同而得到不同答案。若 Log 確定使用本機時間，可改選「瀏覽器本地時間」。</div></div>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Log 內容會上傳嗎？</button><div class="faq-answer" hidden>不會。時間辨識與轉換都由瀏覽器中的 JavaScript 完成，輸入內容不會送到伺服器。</div></div>
+    </section>
+  </main>
+  <footer data-seo-bar data-seo-cta><nav><a href="https://upliftorch.com/tools">更多工具</a><a href="https://upliftorch.com/contact">聯絡我們</a><a href="https://upliftorch.com/privacy-policy">隱私權</a></nav><p>© <span id="year"></span> Upliftorch，保留所有權利。</p></footer>
+  <script src="core.js"></script><script src="app.js"></script>
+<script>document.querySelectorAll(".current-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
+
+<footer class="open-source-attribution" style="padding:24px;text-align:center"><a href="https://upliftorch.com/">Upliftorch</a> · <a href="https://upliftorch.com/tools/timestamp-converter/">Official demo / 線上工具</a></footer>
+</body>
+</html>

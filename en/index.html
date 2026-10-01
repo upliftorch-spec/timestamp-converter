@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://upliftorch.com/tools/timestamp-converter/en/">
+  <link rel="alternate" hreflang="zh-TW" href="https://upliftorch.com/tools/timestamp-converter/">
+  <link rel="alternate" hreflang="en" href="https://upliftorch.com/tools/timestamp-converter/en/">
+  <link rel="alternate" hreflang="x-default" href="https://upliftorch.com/tools/timestamp-converter/en/">
+  <title>Unix Timestamp Converter — Convert Epoch, ISO 8601 and Log Times</title>
+  <meta name="description" content="Free Unix timestamp and log time converter for seconds, milliseconds, microseconds, nanoseconds, ISO 8601 and Apache logs. Convert full logs locally in your browser.">
+  <meta name="keywords" content="Unix timestamp converter,epoch converter,log time converter,ISO 8601,time zone converter">
+  <meta property="og:title" content="Unix Timestamp and Log Time Converter">
+  <meta property="og:description" content="Detect single timestamps or convert complete log snippets to UTC, local time or any IANA timezone.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Unix Timestamp and Log Time Converter","url":"https://upliftorch.com/tools/timestamp-converter/en/","applicationCategory":"DeveloperApplication","operatingSystem":"All","description":"A free browser-based converter for Unix timestamps, ISO 8601 and log times","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+  <header><div class="header-inner"><a class="brand" href="https://upliftorch.com/tools/timestamp-converter/en/"><span class="icon icon-clock" aria-hidden="true"></span><span>Timestamp Converter</span></a><div class="header-actions"><a href="https://upliftorch.com/tools/timestamp-converter/">繁中</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode"><span class="icon icon-moon" id="themeIcon" aria-hidden="true"></span></button></div></div></header>
+  <main class="container">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="https://upliftorch.com/">Home</a><span>›</span><a href="https://upliftorch.com/tools-en">Free Online Tools</a><span>›</span><span aria-current="page">Timestamp Converter</span></nav>
+    <section class="hero"><div class="eyebrow">Developer Utility</div><h1>Unix Timestamp &amp; Log Time Converter</h1><p>Detect Unix seconds, milliseconds, microseconds, nanoseconds, ISO 8601 and Apache log times, then convert them to any IANA timezone.</p><div class="privacy-note"><span class="icon icon-lock" aria-hidden="true"></span><span>Everything stays in your browser</span></div></section>
+
+    <section class="tool-grid" aria-label="Timestamp conversion tools">
+      <div class="card">
+        <h2>Convert one timestamp</h2><p class="card-intro">Paste a timestamp or date and press Enter.</p>
+        <div class="field"><label for="timestampInput">Timestamp or date</label><input class="input" id="timestampInput" autocomplete="off" spellcheck="false" placeholder="For example, 1767225600 or 2026-01-01T00:00:00Z"></div>
+        <div class="button-row"><button class="btn btn-primary" id="convertBtn" type="button">Convert time</button><button class="btn btn-secondary" id="nowBtn" type="button">Use current time</button></div>
+        <div class="examples"><span>Examples:</span><button class="chip" type="button" data-example="1767225600">Unix seconds</button><button class="chip" type="button" data-example="1767225600000">Unix ms</button><button class="chip" type="button" data-example="2026-01-01T00:00:00Z">ISO 8601</button></div>
+        <div class="status" id="inputStatus" aria-live="polite"></div><div class="result-panel" id="resultPanel" hidden></div>
+      </div>
+      <div class="card">
+        <h2>Conversion settings</h2><p class="card-intro">Choose how timezone-free input is interpreted and where results are displayed.</p>
+        <div class="field"><label for="naiveMode">When the input has no timezone</label><select class="select" id="naiveMode"><option value="utc">Assume UTC</option><option value="local">Assume browser local time</option><option value="zone">Use a specific source timezone</option></select></div>
+        <div class="field" id="sourceZoneField" hidden><label for="sourceZone">Source IANA timezone</label><input class="input" id="sourceZone" list="timezoneList" placeholder="Asia/Tokyo" autocomplete="off"></div>
+        <div class="field"><label for="outputZone">Output IANA timezone</label><input class="input" id="outputZone" list="timezoneList" placeholder="America/New_York" autocomplete="off"><datalist id="timezoneList"></datalist></div>
+        <div class="field"><label for="syslogYear">Year for yearless syslog entries (optional)</label><input class="input" id="syslogYear" type="number" min="1970" max="9999" placeholder="For example, 2026"></div>
+        <div class="field"><label for="numericMode">Numeric values inside logs</label><select class="select" id="numericMode"><option value="contextual">Only timestamp, time, ts, iat and exp fields</option><option value="all">Every 10, 13, 16 or 19-digit number</option></select></div>
+        <div class="supported"><strong>Supported formats</strong><br>10, 13, 16 and 19-digit Unix timestamps, ISO 8601, Java, RFC 2822, Apache/Nginx, syslog and YYYY-MM-DD HH:mm:ss.</div>
+      </div>
+      <div class="card full">
+        <h2>Convert timestamps inside logs</h2><p class="card-intro">Keep the original text and append the converted time after every detected timestamp.</p>
+        <div class="log-grid"><div><label for="logInput">Original log</label><textarea class="textarea" id="logInput" spellcheck="false" placeholder="2026-01-01T00:00:00Z INFO server started&#10;127.0.0.1 - - [01/Jan/2026:08:00:00 +0800] GET /health 200"></textarea></div><div><label for="logOutput">Converted result</label><textarea class="textarea output" id="logOutput" readonly placeholder="Converted output appears here"></textarea></div></div>
+        <div class="button-row"><button class="btn btn-primary" id="logConvertBtn" type="button">Convert log</button><button class="btn btn-secondary" id="copyLogBtn" type="button">Copy result</button><button class="btn btn-secondary" id="logClearBtn" type="button">Clear</button></div><div class="status" id="logStatus" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="content"><h2>Convert time in three steps</h2><div class="steps"><div class="step"><strong>1. Paste a time</strong><span>Enter one timestamp or paste a complete application log.</span></div><div class="step"><strong>2. Choose a timezone</strong><span>Define timezone-free input and select an output timezone.</span></div><div class="step"><strong>3. Copy the result</strong><span>Get Unix, ISO, UTC, local time or an annotated log.</span></div></div></section>
+    <section class="content"><h2>Common uses</h2><div class="feature-grid"><div class="feature"><strong>Backend and API debugging</strong><p>Understand epoch values returned by databases, JWTs and APIs.</p></div><div class="feature"><strong>Cross-region log analysis</strong><p>Convert UTC and Apache logs into your team's timezone.</p></div><div class="feature"><strong>Format verification</strong><p>Compare seconds, milliseconds and ISO 8601 to catch unit mistakes.</p></div></div></section>
+    <section class="content faq"><h2>Frequently asked questions</h2>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Is a Unix timestamp in seconds or milliseconds?</button><div class="faq-answer" hidden>A traditional Unix timestamp counts seconds since 1970-01-01 UTC, while JavaScript often uses milliseconds. This tool detects common 10, 13, 16 and 19-digit values.</div></div>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">What happens when a date has no timezone?</button><div class="faq-answer" hidden>The default is UTC so that results do not change between computers. Choose browser local time when you know the source log was written in local time.</div></div>
+      <div class="faq-item"><button class="faq-question" type="button" aria-expanded="false">Are my logs uploaded?</button><div class="faq-answer" hidden>No. Detection and conversion run in JavaScript inside your browser. Your input is not sent to a server.</div></div>
+    </section>
+  </main>
+  <footer data-seo-bar data-seo-cta><nav><a href="https://upliftorch.com/tools-en">More tools</a><a href="https://upliftorch.com/contact">Contact</a><a href="https://upliftorch.com/privacy-policy">Privacy</a></nav><p>© <span id="year"></span> Upliftorch. All rights reserved.</p></footer>
+  <script src="../core.js"></script><script src="../app.js"></script>
+<script>document.querySelectorAll(".current-year").forEach(function (el) { el.textContent = new Date().getFullYear(); });</script>
+
+<footer class="open-source-attribution" style="padding:24px;text-align:center"><a href="https://upliftorch.com/">Upliftorch</a> · <a href="https://upliftorch.com/tools/timestamp-converter/">Official demo / 線上工具</a></footer>
+</body>
+</html>
